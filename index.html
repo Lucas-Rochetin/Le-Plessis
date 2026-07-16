@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le Plessis</title>
+    <link rel="canonical" href="https://leplessis71.com/">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="js/script.js" defer></script>
+    <script src="js/modal.js" defer></script>
+    <script src="js/modalpdf.js" defer></script>
+    <script src="js/burger.js" defer></script>
+    <script src="js/carousel.js" defer></script>
+    <script src="js/actualites.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <meta name="description" content="Restaurant Le Plessis à Blanzy - Snacking, Réceptions et convivialité dans un cadre chaleureux.">
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Restaurant",
+            "name": "Le Plessis",
+            "image": "https://leplessis71.com/images/LePLESSIS-terrasse+cocktail.webp",
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "33 Route de Mâcon",
+                "addressLocality": "Blanzy",
+                "postalCode": "71450",
+                "addressCountry": "FR"
+            },
+            "telephone": "+33373551310",
+            "email": "leplessis71@orange.fr",
+            "url": "https://leplessis71.com",
+            "priceRange": "€€",
+            "servesCuisine": ["Française", "Snack"],
+            "openingHours": [
+            "Mo-Fr 08:00-14:30",
+            "We-Fr 17:00-01:00",
+            "Sa 11:00-01:00"
+            ],
+            "sameAs": [
+            "https://www.facebook.com/p/Le-Plessis-61556838190491/",
+            "https://www.instagram.com/leplessis_/"
+            ]
+        }
+    </script>
+    
+</head>
+<body class="bg-gray-100 font-serif text-gray-800">
+    
+    <!-- MODALE D'ACCUEIL -->
+    <div id="welcomeModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-[100] hidden">
+        <div class="bg-white rounded-xl shadow-lg relative max-w-md w-11/12 md:w-2/3 lg:w-1/3 p-4">
+            
+            <!-- Bouton fermeture -->
+            <button id="closeWelcomeModal"
+            class="absolute top-2 right-3 text-gray-500 hover:text-black text-2xl font-bold">
+            &times;
+        </button>
+        
+        <!-- Image modifiable -->
+        <img
+        src="images/carte_semaine.png"
+        alt="Information importante"
+        class="w-full h-auto rounded-lg"
+        />
+    </div>
+</div>
+
+
+<!-- Header -->
+<header class="relative h-[100vh] flex flex-col justify-center items-center text-white">
+    
+    <!-- Topbar -->
+    <div id="topBar" class="fixed top-0 left-0 w-full bg-black text-white py-4 shadow-lg z-50">
+        <div class="flex items-center justify-between max-w-md md:max-w-screen-xl mx-auto px-4">
+            
+            <!-- Logo -->
+            <a href="index.html" class="flex items-center mr-2 md:mr-4">
+                <img src="images/Logo-Plessis.png" alt="Logo" class="h-12 w-auto object-cover rounded">
+            </a>
+            
+            <!-- Menu desktop -->
+            <nav class="hidden md:flex items-center space-x-8 font-medium">
+                <a href="#about" class="hover:underline">À propos</a>
+                <a href="#concepts" class="hover:underline">Nos concepts</a>
+                <a href="#espaces" class="hover:underline">Nos espaces</a>
+                <a href="#actualites" class="hover:underline">Actualités</a>
+                <a href="#partenaires" class="hover:underline">Partenaires</a>
+                <button id="openReservationModal" class="hidden md:inline-block bg-white text-gray-800 px-4 py-2 rounded hover:bg-gray-200">
+                    Contactez-nous
+                </button>
+            </nav>
+            
+            <!-- Burger mobile -->
+            <div class="md:hidden flex items-center">
+                <button id="burgerBtn" class="focus:outline-none text-white relative z-[100]">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<!-- Menu mobile -->
+<div id="mobileMenu"
+     class="flex flex-col bg-black text-white w-56 rounded shadow-lg mt-2 space-y-2 px-4 py-2 md:hidden absolute right-0 top-16 z-[100] origin-top scale-y-0 opacity-0 transition-all duration-300">
+    <a href="#about" class="block hover:underline">À propos</a>
+    <a href="#concepts" class="block hover:underline">Nos concepts</a>
+    <a href="#espaces" class="block hover:underline">Nos espaces</a>
+    <a href="#actualites" class="block hover:underline">Actualités</a>
+    <a href="#partenaires" class="block hover:underline">Partenaires</a>
+    <a id="mobileContactBtn" class="block bg-white text-gray-800 px-4 py-2 rounded hover:bg-gray-200 mt-2 cursor-pointer w-40 text-center">
+        Contactez-nous
+    </a>
+</div>
+
+<!-- MODALE RÉSERVATION -->
+<div id="reservationModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md relative text-center">
+        <!-- Bouton de fermeture -->
+        <button id="closeReservationModal" class="absolute top-2 right-2 text-gray-500 hover:text-black text-xl font-bold">&times;</button>
+        
+        <!-- Contenu de la modale -->
+        <h2 class="text-2xl font-semibold mb-4 text-gray-800 font-bodoni">Réservez une table</h2>
+        <p class="mb-4 text-gray-800 font-bodoni">Veuillez nous contacter pour réserver une table :</p>
+        <p class="text-gray-800 font-bodoni">📧 Mail : <a href="mailto:leplessis71@orange.fr" class="text-gray-800 underline hover:text-blue-600">leplessis71@orange.fr</a></p>
+        <p class="text-gray-800 font-bodoni">📞 Téléphone : <a href="tel:0373551310" class="text-gray-800 underline hover:text-blue-600">03 73 55 13 10</a></p>
+    </div>
+</div>
+
+<!-- Image de fond -->
+<img src="images/LE_PLESSIS_facade-2.webp" alt="Restaurant Le Plessis" class="absolute w-full h-full object-cover pointer-events-none" loading="lazy">
+
+<!-- Overlay sombre -->
+<div class="absolute inset-0 bg-black bg-opacity-50 z-10 hidden"></div>
+
+<!-- Contenu texte -->
+<div class="relative z-20 text-center flex flex-col items-center">
+    <img src="images/Logo-Plessis.png" alt="Logo" class="h-48 w-auto object-cover rounded mx-auto hidden">
+    <h2 class="text-2xl -mt-8 pb-2 font-bodoni hidden">Snacking • Restaurant • Réception</h2>
+</div>
+
+</header>
+
+<!-- Section À propos -->
+<section id="about" class="max-w-7xl mx-auto pl-6 pr-6 py-12 flex flex-col md:gap-4 md:flex-row items-center">
+    <div class="md:w-1/2 min-sm:pr-4">
+        <h2 class="text-3xl pb-4 max-sm:text-center font-bodoni">Bienvenue au Plessis</h2>
+        <p class="pb-3 max-sm:text-center font-bodoni">À la fois bar à vins, restaurant à partager et espace snacking, Le Plessis propose une cuisine inventive et de qualité, fondée sur des produits frais, bien travaillés et mis en valeur par une présentation soignée. Que ce soit pour une pause déjeuner gourmande avec sandwiches, focaccias, salades ou plats chauds, ou pour un moment convivial autour d’assiettes à partager et d’une belle sélection de vins, l’établissement s’adapte à toutes vos envies. Le cadre, raffiné et accueillant, invite à la détente — avec une terrasse permettant de profiter d’un environnement agréable selon les saisons.</p>
+    </div>
+    <div class="md:w-1/2 md:text-center">
+        <video width="320" height="240" controls class="w-full rounded-lg" allowfullscreen title="Présentation du restaurant Le Plessis">
+            <source src="videos/Le-PLESSIS.m4v" type="video/mp4" loading="lazy">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+</section>
+<!-- Nos Concepts -->
+<section class="bg-black py-8" id="concepts">
+    <h2 class="text-3xl text-center text-white font-bodoni">Nos Concepts</h2>
+    <div class="md:max-w-7xl max-w-xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
+        
+        <!-- Snacking -->
+        <div class="bg-white rounded shadow p-4 flex flex-col justify-between h-full w-full mx-auto">
+            <div>
+                <img src="images/LePLESSIS-exemple_snack.webp" alt="Exemple Snack" class="w-full h-48 object-cover rounded" loading="lazy">
+                <h3 class="text-xl mt-2 pb-2 mr-2 ml-2 font-bodoni">Snacking</h3>
+                <p class="text-sm pb-1 mr-2 ml-2 font-bodoni">Horaires</p>
+                <p class="text-sm mr-2 ml-2 font-bodoni">Du Lundi au Vendredi : 8h - 14h30</p>
+            </div>
+            <div class="flex justify-between items-center gap-2 mt-4 px-4 pb-2">
+                <!-- Bouton Carte -->
+                <button 
+                    class="open-pdf bg-black text-white px-4 py-2 rounded"
+                    data-pdf="/documents/carte_snacking.pdf">
+                    Carte
+                </button>
+            
+            <!-- Bouton Visite -->
+            <button class="open-modal bg-black text-white px-4 py-2 rounded text-center font-bodoni">Visitez</button>
+        </div>
+        
+        
+        <!-- Pop-Up -->
+        <div class="popup-modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+            <div class="bg-white rounded-lg shadow-lg px-6 py-2 w-full max-w-md md:max-w-5xl relative">
+                
+                <!-- Bouton de fermeture -->
+                <button class="close-modal absolute top-2 right-2 text-gray-500 hover:text-black text-xl font-bold">&times;</button>
+                
+                <!-- Titre -->
+                <h2 class="text-2xl font-semibold mb-4 font-bodoni">Snacking - Visite</h2>
+                
+                <!-- Zone carousel avec boutons sur les côtés -->
+                <div class="flex items-center justify-between mb-4">
+                    
+                    <!-- Bouton précédent -->
+                    <button class="prev-carousel bg-gray-700 text-white px-3 py-2 rounded">‹</button>
+                    
+                    <!-- Carousel images -->
+                    <div class="overflow-hidden rounded-lg h-48 md:h-full w-full mx-2">
+                        <div class="carousel-images flex transition-transform duration-500 ease-in-out h-full">
+                            <img src="images/LePLESSIS-snacking1.webp" class="min-w-full object-cover max-h-full flex-shrink-0" alt="Snacking 1" />
+                            <img src="images/LePLESSIS-snacking2.webp" class="min-w-full object-cover max-h-full flex-shrink-0" alt="Snacking 2" />
+                            <img src="images/LePLESSIS-snacking3.webp" class="min-w-full object-cover max-h-full flex-shrink-0" alt="Snacking 3" />
+                            <img src="images/LePLESSIS-snacking4.webp" class="min-w-full object-cover max-h-full flex-shrink-0" alt="Snacking 4" />
+                            <img src="images/LePLESSIS-snacking5.webp" class="min-w-full object-cover max-h-full flex-shrink-0" alt="Snacking 5" />
+                        </div>
+                    </div>
+                    
+                    <!-- Bouton suivant -->
+                    <button class="next-carousel bg-gray-700 text-white px-3 py-2 rounded">›</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Restaurant -->
+    <div class="bg-white rounded shadow p-4 flex flex-col justify-between h-full w-full mx-auto">
+        <div>
+            <img src="images/LePLESSIS-table.webp" alt="Table Restaurant" class="w-full h-48 object-cover rounded" loading="lazy">
+            <h3 class="text-xl mt-2 pb-2 ml-2 font-bodoni">Restaurant</h3>
+            <p class="text-sm pb-1 mr-2 ml-2 font-bodoni">Horaires</p>
+            <p class="text-sm pb-1 mr-2 ml-2 font-bodoni">Mercredi - Jeudi - Vendredi : 17h - 1h</p>
+            <p class="text-sm mr-2 ml-2 font-bodoni">Samedi : 11h - 1h</p>
+        </div>
+        <div class="flex justify-between items-center gap-2 mt-4 px-4 pb-2">
+            <!-- Bouton Carte -->
+             <button 
+                    class="open-pdf bg-black text-white px-4 py-2 rounded"
+                    data-pdf="/documents/carte_restaurant.pdf">
+                    Carte
+                </button>
+            
+            <!-- Bouton Vins -->
+            <button class="open-pdf bg-black text-white px-4 py-2 rounded text-center font-bodoni" data-pdf="documents/carte-vins.pdf" >Vins</button>
+            
+            <!-- Bouton Visite -->
+            <button class="open-modal bg-black text-white px-4 py-2 rounded text-center font-bodoni">Visitez</button>
+        </div>
+        
+        <!-- Pop-Up -->
+        <div class="popup-modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+            <div class="bg-white rounded-lg shadow-lg px-6 py-2 w-full max-w-md md:max-w-5xl relative">
+                
+                <!-- Bouton Fermeture -->
+                <button class="close-modal absolute top-2 right-2 text-gray-500 hover:text-black text-xl font-bold">&times;</button>
+                
+                <!-- Contenu -->
+                <h2 class="text-2xl font-semibold mb-4 font-bodoni">Restaurant - Visite</h2>
+                
+                <!-- Carousel avec boutons sur les côtés -->
+                <div class="flex items-center justify-between mb-4">
+                    
+                    <!-- Bouton précédent -->
+                    <button class="prev-carousel bg-gray-700 text-white px-3 py-2 rounded">‹</button>
+                    
+                    <!-- Carousel images -->
+                    <div class="overflow-hidden rounded-lg h-48 md:h-full w-full mx-2">
+                        <div class="carousel-images flex transition-transform duration-500 ease-in-out h-full">
+                            <img src="images/LePLESSIS-restaurant1.webp" class="min-w-full object-cover max-h-full flex-shrink-0" alt="Restaurant 1" />
+                            <img src="images/LePLESSIS-restaurant2.webp" class="min-w-full object-cover max-h-full flex-shrink-0" alt="Restaurant 2" />
+                            <img src="images/LePLESSIS-restaurant3.webp" class="min-w-full object-cover max-h-full flex-shrink-0" alt="Restaurant 3" />
+                            <img src="images/LePLESSIS-restaurant4.webp" class="min-w-full object-cover max-h-full flex-shrink-0" alt="Restaurant 4" />
+                        </div>
+                    </div>
+                    
+                    <!-- Bouton suivant -->
+                    <button class="next-carousel bg-gray-700 text-white px-3 py-2 rounded">›</button>
+                    
+                </div>
+                
+            </div>
+        </div>
+    </div>   
+    
+    <!-- Salle de réception -->
+    <div class="bg-white rounded shadow p-4 flex flex-col justify-between h-full w-full mx-auto">
+        <div>
+            <img src="images/LePLESSIS-salle.webp" alt="Salle de réception" class="w-full h-48 object-cover rounded" loading="lazy">
+            <h3 class="text-xl mt-2 mr-2 ml-2 font-bodoni">Salle de réception</h3>
+            <p class="text-sm pt-8 mr-2 ml-2 font-bodoni">Sous réservation</p>
+        </div>
+        <div class="flex justify-between items-center gap-1 mt-4 pr-4 pl-1 pb-2">
+            <!-- Réservation : ouvre pop-up info -->
+            <button class="open-reservation bg-black text-white px-4 py-2 rounded text-center font-bodoni">Réservez</button>
+            
+            <!-- Brochure -->
+            <button class="open-pdf bg-black text-white px-4 py-2 rounded text-center" data-pdf="documents/Brochure_Salle_Réception.pdf" data-title="Brochure Salle de réception">Brochure</button>
+            
+            <!-- Visitez : ouvre carrousel -->
+            <button class="hidden open-carousel bg-black text-white px-4 py-2 rounded text-center">Visitez</button>
+        </div>
+        
+        <!-- Pop-Up Réservation -->
+        <div class="reservation-modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+            <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md md:max-w-5xl relative">
+                <button class="close-modal absolute top-2 right-2 text-gray-500 hover:text-black text-xl font-bold">&times;</button>
+                
+                <h2 class="text-2xl font-semibold mb-4 font-bodoni">Salle de réception</h2>
+                <div class="mt-4 mb-8 w-full">
+                    <img src="images/LePLESSIS-salle.webp" alt="popup-salle" class="rounded shadow w-full h-auto max-h-[70vh] object-cover mx-auto" />
+                </div>
+                <p class="mb-4 font-bodoni">Pour réserver notre salle de réception, veuillez nous contacter par mail ou par téléphone.</p>
+                <p><strong>Mail :</strong> <a href="mailto:nec-traiteur@orange.fr" class="underline hover:text-blue-600 font-bodoni">nec-traiteur@orange.fr</a></p>
+                <p><strong>Téléphone :</strong> <a href="tel:0385580606" class="underline hover:text-blue-600 font-bodoni">03 85 58 06 06</a></p>
+            </div>
+        </div>
+        
+        <!-- Pop-Up Carousel -->
+        <div class="carousel-modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+            <div class="bg-white rounded-lg shadow-lg px-6 py-4 w-full max-w-md md:max-w-5xl relative">
+                
+                <!-- Bouton fermeture -->
+                <button class="close-modal absolute top-2 right-2 text-gray-500 hover:text-black text-xl font-bold">&times;</button>
+                
+                <h2 class="text-2xl font-semibold mb-4 font-bodoni">Salle de réception - Visite</h2>
+                
+                <!-- Carousel avec boutons latéraux -->
+                <div class="flex items-center justify-between mb-4">
+                    <button class="prev-carousel bg-gray-700 text-white px-3 py-2 rounded">‹</button>
+                    <div class="overflow-hidden rounded-lg h-48 md:h-full w-full mx-2">
+                        <div class="carousel-images flex transition-transform duration-500 ease-in-out h-full">
+                            <img src="images/LePLESSIS-salle1.webp" class="min-w-full object-cover max-h-full flex-shrink-0" alt="Salle 1" />
+                            <img src="images/LePLESSIS-salle2.webp" class="min-w-full object-cover max-h-full flex-shrink-0" alt="Salle 2" />
+                            <img src="images/LePLESSIS-salle3.webp" class="min-w-full object-cover max-h-full flex-shrink-0" alt="Salle 3" />
+                            <img src="images/LePLESSIS-salle4.webp" class="min-w-full object-cover max-h-full flex-shrink-0" alt="Salle 4" />
+                        </div>
+                    </div>
+                    <button class="next-carousel bg-gray-700 text-white px-3 py-2 rounded">›</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modale PDF commune -->
+    <div id="pdfModal"
+    class="fixed inset-0 hidden z-50 flex items-center justify-center bg-black/50 transition-opacity duration-300">
+    <div class="modal-content bg-white rounded-xl shadow-lg p-4 w-11/12 md:w-4/5 lg:w-3/5 relative max-h-[90vh] overflow-hidden">
+        <button id="closePdfModal"
+        class="absolute top-2 right-2 text-gray-500 hover:text-black text-2xl font-bold">&times;</button>
+        <h2 class="text-2xl font-semibold mb-4 text-center font-bodoni">Document PDF</h2>
+        <div class="swiper mySwiper flex justify-center">
+            <div class="swiper-wrapper" id="pdfContainer"></div>
+            <div class="swiper-button-next text-gray-900"></div>
+            <div class="swiper-button-prev text-gray-900"></div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+</div>
+
+
+</div>
+</section>
+
+<!--Section Nos espaces-->
+<section class="py-8 md:px-0 px-4" id="espaces">
+    <h2 class="text-3xl text-center py-2 mb-4 font-bodoni">Nos espaces</h2>
+    <div id="strengths-carousel" class="relative max-w-7xl mx-auto md:px-0 overflow-hidden">
+        <div id="strengths-carousel-items" class=" transition-transform duration-500 ease-in-out justify-center">
+            
+            <div class="w-full md:w-1/3 p-4 bg-white rounded shadow text-center opacity-70 hover:opacity-100 transition-opacity duration-300">
+                <img
+                src="images/LePLESSIS-restaurant3.webp"
+                alt="Restaurant"
+                class="w-full rounded-lg object-cover h-96"
+                loading="lazy"
+                />
+                <h3 class="text-xl my-2 font-bodoni">Restaurant</h3>
+            </div>
+            
+            <div class="w-full md:w-1/3 p-4 bg-white rounded shadow text-center opacity-70 hover:opacity-100 transition-opacity duration-300">
+                <img
+                src="images/LePLESSIS-snacking4.webp"
+                alt="Snacking"
+                class="w-full rounded-lg object-cover h-96"
+                loading="lazy"
+                />
+                <h3 class="text-xl my-2 font-bodoni">Snacking</h3>
+            </div>
+            
+            <div class="w-full md:w-1/3 p-4 bg-white rounded shadow text-center opacity-70 hover:opacity-100 transition-opacity duration-300">
+                <img
+                src="images/LePLESSIS-cave.webp"
+                alt="Cave"
+                class="w-full rounded-lg object-cover h-96"
+                loading="lazy"
+                />
+                <h3 class="text-xl my-2 font-bodoni">Cave</h3>
+            </div>
+            
+            <div class="w-full md:w-1/3 p-4 bg-white rounded shadow text-center opacity-70 hover:opacity-100 transition-opacity duration-300">
+                <img
+                src="images/LePLESSIS-bar.webp"
+                alt="Bar"
+                class="w-full rounded-lg object-cover h-96"
+                loading="lazy"
+                />
+                <h3 class="text-xl my-2 font-bodoni">Bar</h3>
+            </div>
+            
+            <div class="w-full md:w-1/3 p-4 bg-white rounded shadow text-center opacity-70 hover:opacity-100 transition-opacity duration-300">
+                <img
+                src="images/LePLESSIS-terrasse.webp"
+                alt="Terrasse"
+                class="w-full rounded-lg object-cover h-96"
+                loading="lazy"
+                />
+                <h3 class="text-xl my-2 font-bodoni">Terrasse</h3>
+            </div>
+            <div class="w-full md:w-1/3 p-4 bg-white rounded shadow text-center opacity-70 hover:opacity-100 transition-opacity duration-300">
+                <img
+                src="images/LePLESSIS-kiosque.webp"
+                alt="Kiosque"
+                class="w-full rounded-lg object-cover h-96"
+                loading="lazy"
+                />
+                <h3 class="text-xl my-2 font-bodoni">Kiosque</h3>
+            </div>
+        </div>
+        
+        <!-- Prev / Next buttons -->
+        <button id="strengths-prev" class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black text-white p-2 rounded z-10" aria-label="Slide précédent">‹</button>
+        <button id="strengths-next" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black text-white p-2 rounded z-10" aria-label="Slide suivant">›</button>
+    </div>
+</section>
+
+<!-- Section Actualités -->
+<section id="actualites" class="bg-black pb-16 pt-8 px-4">
+    <div class="max-w-7xl mx-auto text-center">
+        <h2 class="text-3xl font-serif text-white mb-6 font-bodoni">Actualités</h2>
+        
+        <!-- Conteneur dynamique -->
+        <div id="news-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 place-items-center">
+            <!-- Les actualités seront injectées ici par le JS -->
+        </div>
+    </div>
+    
+    <!-- Conteneur des modales -->
+    <div id="modals-container"></div>
+</section>
+
+
+
+<!-- Partenaires -->
+<section class="py-12" id="partenaires">
+    
+    <h2 class="text-3xl text-center mb-10 font-bodoni">
+        Nos Partenaires et Producteurs
+    </h2>
+    
+    <div class="carousel-wrapper">
+        
+        <div class="carousel-track" id="logoTrack">
+            
+            <a href="https://brasserieautremonde.fr" target="_blank">
+                <img src="images/autre_monde_logo.webp">
+            </a>
+            
+            <a href="https://www.lasaugerie.com">
+                <img src="images/bergerie_saugerie.webp">
+            </a>
+            
+            <a href="https://morinfruits.fr">
+                <img src="images/morinfruits_logo.webp">
+            </a>
+            
+            <a href="https://nec-traiteur.com">
+                <img src="images/NEC-logo.webp">
+            </a>
+            
+            <a href="https://www.fermedelusignat.fr">
+                <img src="images/ferme-lusignat-logo.webp">
+            </a>
+            
+            <a href="#">
+                <img src="images/logo-marmiz.webp">
+            </a>
+            
+            <a href="https://www.lafrenchsvp.com/fr/">
+                <img src="images/logo-french-svp.webp">
+            </a>
+            
+            <a href="https://jacoulot.com/fr/">
+                <img src="images/jacoulot-logov2.webp">
+            </a>
+            
+            <a href="https://vedrenne.fr">
+                <img src="images/vedrenne-logo.webp">
+            </a>
+            
+            <a href="https://www.cafesmonika.com">
+                <img src="images/cafe-monika-logo.webp">
+            </a>
+            
+        </div>
+        
+    </div>
+    
+</section>
+
+<!-- Section Nous trouver -->
+<section id="localisation" class="py-6 bg-black">
+    
+    <h2 class="text-3xl text-center text-white mb-8 font-bodoni">
+        Nous trouver
+    </h2>
+    
+    <div class="max-w-7xl mx-auto px-6 grid gap-8 items-center">
+        
+        <!-- Carte -->
+        <div class="w-full max-w-[600px] h-[400px] rounded-xl overflow-hidden shadow-lg mx-auto">
+            
+            <!-- IFRAME GOOGLE MAPS -->
+            <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2737.7696348563322!2d4.38417207651177!3d46.67080907111936!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47f3b500349f43cd%3A0x41111cf95afef498!2sLE%20PLESSIS!5e0!3m2!1sfr!2sfr!4v1773219322766!5m2!1sfr!2sfr" 
+            class="w-full h-full border-0" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+        
+    </div>
+    
+    <!-- Informations -->
+    <div class="text-center space-y-4 font-bodoni">
+        
+        <a 
+        href="https://www.google.com/maps/place/LE+PLESSIS+33+ROUTE+DE+MACON+71450+BLANZY/"
+        target="_blank"
+        class="inline-block mt-2 bg-white text-black px-6 py-3 rounded hover:bg-gray-800 transition">
+        Itinéraire
+    </a>
+</div>
+
+</div>
+
+</section>
+
+<!-- Section Avis Google -->
+<section id="avis" class="py-6 bg-gray-100">
+    
+    <div class="max-w-7xl mx-auto px-6 text-center">
+        
+        <h2 class="text-3xl mb-4 font-bodoni">
+            Avis de nos clients
+        </h2>
+        
+        <p class="mb-8 font-bodoni">
+            Découvrez ce que nos clients pensent de leur expérience au Plessis
+        </p>
+        
+        <!-- Widget Google Reviews -->
+        <div class="bg-gray-100 rounded-xl shadow-lg p-6">
+            
+            <!-- Elfsight Google Reviews | Untitled Google Reviews -->
+            <script src="https://elfsightcdn.com/platform.js" async></script>
+            <div class="elfsight-app-1dac096c-da26-48a6-a3a4-3e62f1e2b009" data-elfsight-app-lazy></div>
+            
+            
+        </div>
+        
+    </div>
+    
+</section>
+
+<!-- Footer -->
+<footer class="bg-black  text-gray-300 p-6">
+    <button id="backToTop" class="hidden fixed bottom-4 right-4 bg-gray-700 text-white hover:opacity-80 px-5 py-3 rounded-full shadow-lg z-50">
+        ↑
+    </button>
+    <!-- Contact -->
+    <div class="max-w-7xl mx-auto grid grid-cols-1 grid-cols-2 gap-4">
+        <div>
+            <h3 class="pb-3 text-white font-bold font-bodoni">Contactez-nous</h3>
+            
+            <a href="https://www.google.com/maps/place/LE+PLESSIS+33+ROUTE+DE+MACON+71450+BLANZY/@46.6708091,4.386747,17z/data=!3m1!4b1!4m6!3m5!1s0x47f3b500349f43cd:0x41111cf95afef498!8m2!3d46.6708091!4d4.386747!16s%2Fg%2F11w9v6mndr?entry=ttu" 
+            rel="noopener noreferrer" 
+            target="_blank" 
+            class="block hover:underline text-white pb-2 font-bodoni">
+            33 Route de Mâcon, 71450 BLANZY
+        </a>
+        
+        <a href="tel:0373551310" class="block hover:underline text-white pb-2">03 73 55 13 10</a>
+        
+        <a href="mailto:leplessis71@orange.fr" class="block hover:underline text-white">leplessis71@orange.fr</a>
+    </div>
+    
+    <!-- Réseaux Sociaux -->
+    <div>
+        <h3 class="text-white font-bold font-bodoni">Nos réseaux sociaux</h3>
+        <div class="flex flex-col space-y-4 text-white pt-4">
+            <!-- Facebook -->
+            <div class="flex flex-col items-center space-y-2 md:flex-row md:space-y-0 md:space-x-2">
+                <!-- Logo -->
+                <a href="https://www.facebook.com/p/Le-Plessis-61556838190491/" class="inline-flex items-center" rel="noopener noreferrer">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" class="h-7 w-7 fill-[#1877f2]">
+                        <path d="M80 299.3V512H196V299.3h86.5l18-97.8H196V166.9c0-51.7 20.3-71.5 72.7-71.5c16.3 0 29.4 .4 37 1.2V7.9C291.4 4 256.4 0 236.2 0C129.3 0 80 50.5 80 159.4v42.1H14v97.8H80z"/>
+                    </svg>
+                </a>
+                
+                <!-- Séparateur (optionnel si tu veux) -->
+                <span class="hidden md:inline">|</span>
+                
+                <!-- Texte -->
+                <a href="https://www.facebook.com/p/Le-Plessis-61556838190491/" class="hover:underline font-bodoni">Facebook</a>
+            </div>
+            
+            <!-- Instagram -->
+            <div class="flex flex-col items-center space-y-2 md:flex-row md:space-y-0 md:space-x-2">
+                <a href="https://www.instagram.com/leplessis_/" class="inline-flex items-center" rel="noopener noreferrer">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="h-7 w-7 fill-[#c13584]">
+                        <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
+                    </svg>
+                </a>
+                <span class="hidden md:inline">|</span>
+                <a href="https://www.instagram.com/leplessis_/" class="hover:underline font-bodoni">Instagram</a>
+            </div>
+        </div>
+    </div>
+    <!--
+    Mention Légale & CGU + Politique cookies + Politique confidantialité
+    <div class="flex flex-col items-start">
+        <a href="politique-cookies.html" class="p-1 hover:underline text-white hidden">Politique de cookies</a>
+        <a href="mentions-legales-cgu.html" class="p-1 hover:underline text-white font-bodoni">Nos Mentions Légales & CGU</a>
+        <a href="politique-confidentialite.html" class="p-1 hover:underline text-white hidden">Politique de confidentialité</a>
+    </div>-->
+</div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,57 @@
+/* Mobile menu animation */
+#mobileMenu.scale-y-100 {
+  transform: scaleY(1);
+  opacity: 1;
+}
+
+#mobileMenu.scale-y-0 {
+  transform: scaleY(0);
+  opacity: 0;
+}
+
+/* Carousels */
+#news-carousel-items, #strengths-carousel-items {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  min-height: 300px;
+}
+
+#news-carousel-items > div, #strengths-carousel-items > div {
+  flex-shrink: 0;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* Carousel infini */
+.carousel-wrapper {
+  max-width: 1200px;
+  margin: auto;
+  overflow: hidden;
+  position: relative;
+}
+
+.carousel-track {
+  display: flex;
+  align-items: center;
+  gap: 80px;
+  width: max-content;
+  animation: scroll linear infinite;
+  animation-duration: 40s;
+}
+
+.carousel-track img {
+  width: 80px;
+  height: auto;
+  object-fit: contain;
+}
+
+@keyframes scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@media (max-width: 767px) {
+  .carousel-track { gap: 40px; animation-duration: 25s; }
+  .carousel-track img { width: 60px; }
+}

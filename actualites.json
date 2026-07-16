@@ -1,0 +1,18 @@
+[
+    {
+        "titre": "Carte snacking de la semaine",
+        "image": "images/carte_semaine.png",
+        "description": "Découvrez notre carte snacking disponible toute la semaine !",
+        "lien": "documents/carte_semaine.pdf",
+        "typeLien": "download",
+        "texteBouton": "Télécharger la carte"
+    },
+    {
+        "titre": "Nos Futurs Évènements",
+        "image": "images/evenement-futur.png",
+        "description": "Découvrez nos futurs évènement organisés avec Le Plessis !",
+        "lien": "#",
+        "typeLien": "link",
+        "texteBouton": "En savoir plus"
+    }
+]
