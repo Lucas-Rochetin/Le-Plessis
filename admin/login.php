@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (isset($_SESSION["admin"]) && $_SESSION["admin"] === true) {
-    header("Location: admin.php");
+    header("Location: admin.html");
     exit;
 }
 ?>
@@ -35,39 +35,44 @@ if (isset($_SESSION["admin"]) && $_SESSION["admin"] === true) {
 </div>
 
 <script>
-async function login() {
+async function login(){
 
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
-
-
-  const res = await fetch("../api/auth.php", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      username,
-      password
-    })
-  });
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
 
 
-  console.log("Statut :", res.status);
+    const response = await fetch("../api/auth.php", {
+
+        method:"POST",
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({
+            username,
+            password
+        })
+
+    });
 
 
-  const text = await res.text();
+    const data = await response.json();
 
-  console.log("Réponse serveur :", text);
 
-  if(res.ok){
-    window.location.href = "admin.html";
-  }
-  else{
-    document
-    .getElementById("error")
-    .classList.remove("hidden");
-  }
+    if(response.ok && data.success){
+
+        window.location.href="admin.html";
+
+    }
+    else{
+
+        document
+        .getElementById("error")
+        .classList.remove("hidden");
+
+    }
+
 }
 </script>
 
