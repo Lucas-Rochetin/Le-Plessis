@@ -61,7 +61,7 @@ async function login() {
   console.log("Réponse serveur :", text);
 
   if(res.ok){
-    window.location.href = "admin.php";
+    window.location.href = "admin.html";
   }
   else{
     document
