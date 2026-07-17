@@ -1,8 +1,8 @@
 <?php
 session_start();
-if (!isset($_SESSION["admin"])) {
-  header("Location: login.php");
-  exit;
+if (isset($_SESSION["admin"]) && $_SESSION["admin"] === true) {
+    header("Location: admin.php");
+    exit;
 }
 ?>
 
@@ -36,19 +36,37 @@ if (!isset($_SESSION["admin"])) {
 
 <script>
 async function login() {
+
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
 
+
   const res = await fetch("../api/auth.php", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username, password })
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      username,
+      password
+    })
   });
 
-  if (res.ok) {
+
+  console.log("Statut :", res.status);
+
+
+  const text = await res.text();
+
+  console.log("Réponse serveur :", text);
+
+  if(res.ok){
     window.location.href = "admin.php";
-  } else {
-    document.getElementById("error").classList.remove("hidden");
+  }
+  else{
+    document
+    .getElementById("error")
+    .classList.remove("hidden");
   }
 }
 </script>
