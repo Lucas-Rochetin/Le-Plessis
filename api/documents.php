@@ -1,6 +1,6 @@
 <?php
 session_start();
-require "../config/database.php";
+require "../admin/database.php";
 if (!isset($_SESSION["admin"])) exit;
 
 if ($_SERVER["REQUEST_METHOD"] === "GET") {
