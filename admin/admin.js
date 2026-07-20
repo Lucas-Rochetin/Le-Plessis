@@ -17,7 +17,7 @@ checkSession();
 // Déconnexion
 
 document.getElementById("logout")
-document.addEventListener("click",()=>{
+    .addEventListener("click",()=>{
 
     window.location.href="logout.php";
 

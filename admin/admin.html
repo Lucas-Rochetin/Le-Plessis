@@ -5,7 +5,7 @@
   <title>Administration - Administration Le Plessis</title>
   <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="admin.js"></script>
+  <script src="admin.js" defer></script>
 </head>
 
 <body class="bg-gray-100 min-h-screen font-sans">
@@ -16,254 +16,371 @@
   <div class="max-w-5xl mx-auto bg-white shadow-md rounded-lg p-6 mt-8">
     <h1 class="text-3xl font-bold text-center mb-8">🧰 Panneau d'administration</h1>
 
-    <!-- ===================== ACTUALITÉS ===================== -->
+    <!-- ===================== NOS ÉVÈNEMENTS PRÉCÉDENTS ===================== -->
     <section class="mb-16">
-      <h2 class="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">📢 Gestion des Actualités</h2>
+      <h2 class="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">🎉 Nos évènements précédents</h2>
+      <p class="text-sm text-gray-500 mb-3">Galerie de photos affichée dans le carrousel. La première photo sert de vignette.</p>
 
-      <form id="newsForm" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-        <input type="hidden" id="editIndex" value="">
+      <div id="galleryDrop" class="border-dashed border-2 p-6 text-center cursor-pointer rounded">Glisser-déposer une photo, ou cliquer</div>
 
-        <div class="col-span-2">
-          <label class="block font-semibold mb-1">Titre</label>
-          <input id="newsTitle" type="text" class="w-full border p-2 rounded" placeholder="Titre de l’actualité" required>
-        </div>
+      <div id="galleryList" class="mt-4 grid grid-cols-3 gap-3"></div>
+    </section>
+
+    <!-- ===================== CARTE SNACKING ===================== -->
+    <section class="mb-16">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">🍟 Carte snacking de la semaine</h2>
+
+      <form id="snackForm" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        <input type="hidden" id="snackEditIndex" value="">
 
         <div>
-          <label class="block font-semibold mb-1">Lien (site ou PDF)</label>
-          <input id="newsLink" type="text" class="w-full border p-2 rounded" placeholder="https://... ou documents/nom.pdf" required>
+          <label class="block font-semibold mb-1">Valable à partir du</label>
+          <input id="snackDate" type="date" class="w-full border p-2 rounded" required>
+          <p class="text-xs text-gray-500 mt-1">Le site affiche automatiquement la carte la plus récente déjà commencée, jusqu'à la date de la suivante.</p>
         </div>
 
         <div>
           <label class="block font-semibold mb-1">Type de lien</label>
-          <select id="newsType" class="w-full border p-2 rounded">
-            <option value="link">Lien externe</option>
+          <select id="snackType" class="w-full border p-2 rounded">
             <option value="download">Téléchargement PDF</option>
+            <option value="link">Lien externe</option>
           </select>
         </div>
 
         <div>
-          <label class="block font-semibold mb-1">Image</label>
-          <input id="newsImage" type="text" class="w-full border p-2 rounded" placeholder="images/news/nom-image.jpg" required>
-          <p class="text-xs text-gray-500 mt-1">→ L’image doit être dans <strong>/images/news/</strong></p>
+          <label class="block font-semibold mb-1">Texte du bouton</label>
+          <input id="snackBtnText" type="text" class="w-full border p-2 rounded" value="Télécharger la carte" required>
+        </div>
+
+        <div id="snackLinkWrap">
+          <label class="block font-semibold mb-1">Lien externe</label>
+          <input id="snackLink" type="text" class="w-full border p-2 rounded" placeholder="https://...">
+        </div>
+
+        <div id="snackPdfWrap" class="hidden">
+          <label class="block font-semibold mb-1">PDF</label>
+          <div id="snackPdfDrop" class="border-dashed border-2 p-4 text-center cursor-pointer rounded">Glisser-déposer un PDF, ou cliquer</div>
         </div>
 
         <div>
-          <label class="block font-semibold mb-1">Texte du bouton</label>
-          <input id="newsBtnText" type="text" class="w-full border p-2 rounded" value="En savoir plus" required>
+          <label class="block font-semibold mb-1">Image</label>
+          <div id="snackImgDrop" class="border-dashed border-2 p-4 text-center cursor-pointer rounded">Glisser-déposer une image, ou cliquer</div>
+          <div id="snackPreview" class="mt-2"></div>
         </div>
 
         <div class="col-span-2">
           <label class="block font-semibold mb-1">Description</label>
-          <textarea id="newsDescription" rows="3" class="w-full border p-2 rounded" placeholder="Courte description..." required></textarea>
+          <textarea id="snackDescription" rows="3" class="w-full border p-2 rounded" required></textarea>
         </div>
 
         <div class="col-span-2 flex gap-3 mt-4">
-          <button type="submit" id="saveBtn" class="bg-green-600 text-white px-4 py-2 rounded hover:opacity-90 transition">➕ Ajouter</button>
-          <button type="button" id="cancelEdit" class="hidden bg-gray-500 text-white px-4 py-2 rounded hover:opacity-90 transition">Annuler</button>
-          <button type="button" id="exportNewsBtn" class="ml-auto bg-green-600 text-white px-4 py-2 rounded hover:opacity-90 transition">⬇️ Exporter JSON</button>
+          <button type="submit" id="snackSaveBtn" class="bg-green-600 text-white px-4 py-2 rounded hover:opacity-90 transition">➕ Ajouter</button>
+          <button type="button" id="snackCancelEdit" class="hidden bg-gray-500 text-white px-4 py-2 rounded hover:opacity-90 transition">Annuler</button>
         </div>
       </form>
 
-      <div id="newsList" class="grid gap-4"></div>
+      <div id="snackList" class="grid gap-4"></div>
     </section>
 
-    <!-- ===================== PDF ===================== -->
+    <!-- ===================== FUTURS ÉVÈNEMENTS ===================== -->
     <section>
-      <h2 class="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">📄 Gestion des documents PDF</h2>
+      <h2 class="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">📅 Nos Futurs Évènements</h2>
+      <p class="text-sm text-gray-500 mb-3">Affiché en carrousel sur le site : titre et description suivent la photo affichée.</p>
 
-      <form id="pdfForm" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-        <input type="hidden" id="editPdfIndex" value="">
+      <form id="futurForm" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        <input type="hidden" id="futurEditIndex" value="">
 
-        <div>
-          <label class="block font-semibold mb-1">Nom du document</label>
-          <input id="pdfTitle" type="text" class="w-full border p-2 rounded" placeholder="Ex : Carte Snacking" required>
+        <div class="col-span-2">
+          <label class="block font-semibold mb-1">Titre</label>
+          <input id="futurTitle" type="text" class="w-full border p-2 rounded" required>
         </div>
 
-        <div>
-          <label class="block font-semibold mb-1">Chemin du fichier</label>
-          <input id="pdfPath" type="text" class="w-full border p-2 rounded" placeholder="documents/nom-du-fichier.pdf" required>
+        <div class="col-span-2">
+          <label class="block font-semibold mb-1">Image</label>
+          <div id="futurImgDrop" class="border-dashed border-2 p-4 text-center cursor-pointer rounded">Glisser-déposer une image, ou cliquer</div>
+          <div id="futurPreview" class="mt-2"></div>
+        </div>
+
+        <div class="col-span-2">
+          <label class="block font-semibold mb-1">Description</label>
+          <textarea id="futurDescription" rows="3" class="w-full border p-2 rounded" required></textarea>
         </div>
 
         <div class="col-span-2 flex gap-3 mt-4">
-          <button type="submit" id="savePdfBtn" class="bg-green-600 text-white px-4 py-2 rounded hover:opacity-90 transition">➕ Ajouter</button>
-          <button type="button" id="cancelPdfEdit" class="hidden bg-gray-500 text-white px-4 py-2 rounded hover:opacity-90 transition">Annuler</button>
-          <button type="button" id="exportPdfBtn" class="ml-auto bg-green-600 text-white px-4 py-2 rounded hover:opacity-90 transition">⬇️ Exporter JSON</button>
+          <button type="submit" id="futurSaveBtn" class="bg-green-600 text-white px-4 py-2 rounded hover:opacity-90 transition">➕ Ajouter</button>
+          <button type="button" id="futurCancelEdit" class="hidden bg-gray-500 text-white px-4 py-2 rounded hover:opacity-90 transition">Annuler</button>
         </div>
       </form>
 
-      <div id="pdfList" class="grid gap-4"></div>
+      <div id="futurList" class="grid gap-4"></div>
     </section>
   </div>
 
   <script>
     // ================================================================
-    // === ACTUALITÉS ===
-    const newsListEl = document.getElementById("newsList");
-    let newsData = JSON.parse(localStorage.getItem("newsData") || "[]");
+    // === OUTILS PARTAGÉS : upload générique + zone de drag & drop ===
+    function initDropZone(zoneId, accept, onFile) {
+      const zone = document.getElementById(zoneId);
 
-    function renderNews() {
-      newsListEl.innerHTML = newsData.length
-        ? ""
-        : '<p class="text-gray-500 italic">Aucune actualité enregistrée.</p>';
-      newsData.forEach((n, i) => {
-        const div = document.createElement("div");
-        div.className = "flex flex-col md:flex-row bg-gray-50 border rounded-lg shadow-sm overflow-hidden";
-        div.innerHTML = `
-          <img src="${n.image}" alt="${n.titre}" class="w-full md:w-48 h-32 object-cover">
-          <div class="flex-1 p-4">
-            <h3 class="font-semibold text-lg text-gray-800">${n.titre}</h3>
-            <p class="text-sm text-gray-600 mb-1 truncate">${n.lien}</p>
-            <p class="text-xs text-gray-500 italic">${n.typeLien === 'download' ? 'Téléchargement PDF' : 'Lien externe'}</p>
-            <p class="text-sm text-gray-700 mt-2">${n.description}</p>
-            <div class="mt-3 flex gap-2">
-              <button onclick="editNews(${i})" class="bg-blue-500 text-white px-3 py-1 rounded hover:opacity-90">Modifier</button>
-              <button onclick="deleteNews(${i})" class="bg-red-600 text-white px-3 py-1 rounded hover:opacity-90">Supprimer</button>
-            </div>
-          </div>`;
-        newsListEl.appendChild(div);
+      zone.addEventListener("click", () => {
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = accept;
+        input.onchange = () => onFile(input.files[0]);
+        input.click();
+      });
+
+      zone.addEventListener("dragover", e => {
+        e.preventDefault();
+        zone.classList.add("border-green-600");
+      });
+
+      zone.addEventListener("dragleave", () => {
+        zone.classList.remove("border-green-600");
+      });
+
+      zone.addEventListener("drop", e => {
+        e.preventDefault();
+        zone.classList.remove("border-green-600");
+        onFile(e.dataTransfer.files[0]);
       });
     }
-    renderNews();
 
-    const newsForm = document.getElementById("newsForm");
-    newsForm.addEventListener("submit", e => {
-      e.preventDefault();
-      const actu = {
-        titre: document.getElementById("newsTitle").value,
-        lien: document.getElementById("newsLink").value,
-        image: document.getElementById("newsImage").value,
-        typeLien: document.getElementById("newsType").value,
-        texteBouton: document.getElementById("newsBtnText").value,
-        description: document.getElementById("newsDescription").value
-      };
-      const i = document.getElementById("editIndex").value;
-      if (i !== "") newsData[i] = actu;
-      else newsData.push(actu);
-      localStorage.setItem("newsData", JSON.stringify(newsData));
-      newsForm.reset();
-      document.getElementById("editIndex").value = "";
-      document.getElementById("saveBtn").textContent = "➕ Ajouter";
-      document.getElementById("cancelEdit").classList.add("hidden");
-      renderNews();
-    });
+    async function uploadFile(file, type) {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("type", type);
 
-    window.editNews = i => {
-      const n = newsData[i];
-      document.getElementById("newsTitle").value = n.titre;
-      document.getElementById("newsLink").value = n.lien;
-      document.getElementById("newsImage").value = n.image;
-      document.getElementById("newsType").value = n.typeLien;
-      document.getElementById("newsBtnText").value = n.texteBouton;
-      document.getElementById("newsDescription").value = n.description;
-      document.getElementById("editIndex").value = i;
-      document.getElementById("saveBtn").textContent = "💾 Enregistrer";
-      document.getElementById("cancelEdit").classList.remove("hidden");
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    };
-
-    window.deleteNews = i => {
-      if (confirm("Supprimer cette actualité ?")) {
-        newsData.splice(i, 1);
-        localStorage.setItem("newsData", JSON.stringify(newsData));
-        renderNews();
+      const res = await fetch("../api/upload.php", { method: "POST", body: formData });
+      if (!res.ok) {
+        alert("❌ Erreur upload");
+        return null;
       }
-    };
-
-    document.getElementById("cancelEdit").addEventListener("click", () => {
-      newsForm.reset();
-      document.getElementById("editIndex").value = "";
-      document.getElementById("saveBtn").textContent = "➕ Ajouter";
-      document.getElementById("cancelEdit").classList.add("hidden");
-    });
-
-    document.getElementById("exportNewsBtn").addEventListener("click", () => {
-      const blob = new Blob([JSON.stringify(newsData, null, 2)], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "actualites.json";
-      a.click();
-      URL.revokeObjectURL(url);
-    });
+      const data = await res.json();
+      return data.path;
+    }
 
     // ================================================================
-    // === PDF ===
-    const pdfListEl = document.getElementById("pdfList");
-    let pdfData = JSON.parse(localStorage.getItem("pdfData") || "[]");
+    // === GALERIES PHOTO (Nos évènements précédents / Nos Futurs Évènements) ===
+    function initGallerySection({ dropId, listId, apiUrl }) {
+      const listEl = document.getElementById(listId);
+      let photos = [];
 
-    function renderPdf() {
-      pdfListEl.innerHTML = pdfData.length
-        ? ""
-        : '<p class="text-gray-500 italic">Aucun PDF enregistré.</p>';
-      pdfData.forEach((p, i) => {
-        const div = document.createElement("div");
-        div.className = "flex justify-between items-center bg-gray-50 border rounded-lg shadow-sm p-4";
-        div.innerHTML = `
-          <div>
-            <h3 class="font-semibold text-lg text-gray-800">${p.nom}</h3>
-            <p class="text-sm text-gray-600">${p.chemin}</p>
-          </div>
-          <div class="flex gap-2">
-            <button onclick="editPdf(${i})" class="bg-blue-500 text-white px-3 py-1 rounded hover:opacity-90">Modifier</button>
-            <button onclick="deletePdf(${i})" class="bg-red-600 text-white px-3 py-1 rounded hover:opacity-90">Supprimer</button>
-          </div>`;
-        pdfListEl.appendChild(div);
-      });
-    }
-    renderPdf();
-
-    const pdfForm = document.getElementById("pdfForm");
-    pdfForm.addEventListener("submit", e => {
-      e.preventDefault();
-      const pdf = {
-        nom: document.getElementById("pdfTitle").value,
-        chemin: document.getElementById("pdfPath").value
-      };
-      const i = document.getElementById("editPdfIndex").value;
-      if (i !== "") pdfData[i] = pdf;
-      else pdfData.push(pdf);
-      localStorage.setItem("pdfData", JSON.stringify(pdfData));
-      pdfForm.reset();
-      document.getElementById("editPdfIndex").value = "";
-      document.getElementById("savePdfBtn").textContent = "➕ Ajouter";
-      document.getElementById("cancelPdfEdit").classList.add("hidden");
-      renderPdf();
-    });
-
-    window.editPdf = i => {
-      const p = pdfData[i];
-      document.getElementById("pdfTitle").value = p.nom;
-      document.getElementById("pdfPath").value = p.chemin;
-      document.getElementById("editPdfIndex").value = i;
-      document.getElementById("savePdfBtn").textContent = "💾 Enregistrer";
-      document.getElementById("cancelPdfEdit").classList.remove("hidden");
-      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-    };
-
-    window.deletePdf = i => {
-      if (confirm("Supprimer ce document ?")) {
-        pdfData.splice(i, 1);
-        localStorage.setItem("pdfData", JSON.stringify(pdfData));
-        renderPdf();
+      async function load() {
+        const res = await fetch(apiUrl);
+        photos = await res.json();
+        render();
       }
-    };
 
-    document.getElementById("cancelPdfEdit").addEventListener("click", () => {
-      pdfForm.reset();
-      document.getElementById("editPdfIndex").value = "";
-      document.getElementById("savePdfBtn").textContent = "➕ Ajouter";
-      document.getElementById("cancelPdfEdit").classList.add("hidden");
-    });
+      function render() {
+        listEl.innerHTML = photos.map((p, i) => `
+          <div class="relative group">
+            <img src="../${p.image}" class="rounded object-cover h-32 w-full">
+            <button data-i="${i}" class="delete-photo absolute top-2 right-2 bg-red-600 text-white px-2 py-1 text-xs rounded opacity-0 group-hover:opacity-100 transition">✕</button>
+          </div>
+        `).join("");
+        listEl.querySelectorAll(".delete-photo").forEach(btn => {
+          btn.addEventListener("click", () => deletePhoto(Number(btn.dataset.i)));
+        });
+      }
 
-    document.getElementById("exportPdfBtn").addEventListener("click", () => {
-      const blob = new Blob([JSON.stringify(pdfData, null, 2)], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "documents.json";
-      a.click();
-      URL.revokeObjectURL(url);
-    });
+      async function deletePhoto(i) {
+        if (!confirm("Supprimer cette photo ?")) return;
+        await fetch(`${apiUrl}?index=${i}`, { method: "DELETE" });
+        await load();
+      }
+
+      initDropZone(dropId, "image/*", async file => {
+        if (!file) return;
+        const path = await uploadFile(file, "image");
+        if (!path) return;
+        await fetch(apiUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ image: path })
+        });
+        await load();
+      });
+
+      load();
+    }
+
+    // ================================================================
+    // === FICHES (Carte snacking / Futurs évènements) ===
+    function initFicheSection({ prefix, apiUrl, defaultBtnText, hasLink = true, hasDate = false, hasTitle = true }) {
+      const listEl = document.getElementById(prefix + "List");
+      const form = document.getElementById(prefix + "Form");
+      const typeSelect = hasLink ? document.getElementById(prefix + "Type") : null;
+      const linkWrap = hasLink ? document.getElementById(prefix + "LinkWrap") : null;
+      const pdfWrap = hasLink ? document.getElementById(prefix + "PdfWrap") : null;
+      let items = [];
+      let currentImage = "";
+      let currentPdf = "";
+
+      function updateTypeVisibility() {
+        if (!hasLink) return;
+        const isDownload = typeSelect.value === "download";
+        pdfWrap.classList.toggle("hidden", !isDownload);
+        linkWrap.classList.toggle("hidden", isDownload);
+      }
+      if (hasLink) typeSelect.addEventListener("change", updateTypeVisibility);
+
+      async function load() {
+        const res = await fetch(apiUrl);
+        items = await res.json();
+        render();
+      }
+
+      function render() {
+        const order = items.map((n, i) => i);
+        if (hasDate) order.sort((a, b) => (items[a].date > items[b].date ? 1 : items[a].date < items[b].date ? -1 : 0));
+
+        listEl.innerHTML = items.length
+          ? ""
+          : '<p class="text-gray-500 italic">Aucune fiche enregistrée.</p>';
+        order.forEach((i) => {
+          const n = items[i];
+          const div = document.createElement("div");
+          div.className = "flex flex-col md:flex-row bg-gray-50 border rounded-lg shadow-sm overflow-hidden";
+          div.innerHTML = `
+            <img src="../${n.image}" alt="${n.titre}" class="w-full md:w-48 h-32 object-cover">
+            <div class="flex-1 p-4">
+              ${hasTitle ? `<h3 class="font-semibold text-lg text-gray-800">${n.titre}</h3>` : ""}
+              ${hasDate ? `<p class="text-sm font-semibold text-gray-800">Valable à partir du ${n.date}</p>` : ""}
+              ${hasLink ? `
+              <p class="text-sm text-gray-600 mb-1 truncate">${n.lien}</p>
+              <p class="text-xs text-gray-500 italic">${n.typeLien === 'download' ? 'Téléchargement PDF' : 'Lien externe'}</p>
+              ` : ""}
+              <p class="text-sm text-gray-700 mt-2">${n.description}</p>
+              <div class="mt-3 flex gap-2">
+                <button type="button" class="edit-btn bg-blue-500 text-white px-3 py-1 rounded hover:opacity-90">Modifier</button>
+                <button type="button" class="delete-btn bg-red-600 text-white px-3 py-1 rounded hover:opacity-90">Supprimer</button>
+              </div>
+            </div>`;
+          div.querySelector(".edit-btn").addEventListener("click", () => editItem(i));
+          div.querySelector(".delete-btn").addEventListener("click", () => deleteItem(i));
+          listEl.appendChild(div);
+        });
+      }
+
+      function resetForm() {
+        form.reset();
+        document.getElementById(prefix + "EditIndex").value = "";
+        document.getElementById(prefix + "SaveBtn").textContent = "➕ Ajouter";
+        document.getElementById(prefix + "CancelEdit").classList.add("hidden");
+        document.getElementById(prefix + "ImgDrop").innerHTML = "Glisser-déposer une image, ou cliquer";
+        document.getElementById(prefix + "Preview").innerHTML = "";
+        currentImage = "";
+        if (hasLink) {
+          document.getElementById(prefix + "PdfDrop").innerHTML = "Glisser-déposer un PDF, ou cliquer";
+          document.getElementById(prefix + "BtnText").value = defaultBtnText;
+          currentPdf = "";
+          updateTypeVisibility();
+        }
+      }
+
+      function editItem(i) {
+        const n = items[i];
+        if (hasTitle) document.getElementById(prefix + "Title").value = n.titre;
+        document.getElementById(prefix + "Description").value = n.description;
+        if (hasDate) document.getElementById(prefix + "Date").value = n.date;
+        currentImage = n.image;
+        document.getElementById(prefix + "Preview").innerHTML = n.image
+          ? `<img src="../${n.image}" class="w-full max-h-48 object-contain rounded">`
+          : "";
+        if (hasLink) {
+          typeSelect.value = n.typeLien;
+          document.getElementById(prefix + "BtnText").value = n.texteBouton;
+          document.getElementById(prefix + "Link").value = n.typeLien === "link" ? n.lien : "";
+          currentPdf = n.typeLien === "download" ? n.lien : "";
+          document.getElementById(prefix + "PdfDrop").innerHTML = n.typeLien === "download"
+            ? "📄 " + n.lien.split("/").pop() + " (actuel)"
+            : "Glisser-déposer un PDF, ou cliquer";
+          updateTypeVisibility();
+        }
+        document.getElementById(prefix + "EditIndex").value = i;
+        document.getElementById(prefix + "SaveBtn").textContent = "💾 Enregistrer";
+        document.getElementById(prefix + "CancelEdit").classList.remove("hidden");
+        window.scrollTo({ top: form.offsetTop, behavior: "smooth" });
+      }
+
+      async function deleteItem(i) {
+        if (!confirm("Supprimer cette fiche ?")) return;
+        await fetch(`${apiUrl}?index=${i}`, { method: "DELETE" });
+        await load();
+      }
+
+      form.addEventListener("submit", async e => {
+        e.preventDefault();
+
+        if (!currentImage) { alert("Merci d'ajouter une image"); return; }
+
+        const item = {
+          image: currentImage,
+          description: document.getElementById(prefix + "Description").value
+        };
+
+        if (hasTitle) item.titre = document.getElementById(prefix + "Title").value;
+        if (hasDate) item.date = document.getElementById(prefix + "Date").value;
+
+        if (hasLink) {
+          const typeLien = typeSelect.value;
+          const lien = typeLien === "download" ? currentPdf : document.getElementById(prefix + "Link").value;
+          if (!lien) { alert(typeLien === "download" ? "Merci d'ajouter un PDF" : "Merci de renseigner un lien"); return; }
+          item.lien = lien;
+          item.typeLien = typeLien;
+          item.texteBouton = document.getElementById(prefix + "BtnText").value;
+        }
+
+        const idx = document.getElementById(prefix + "EditIndex").value;
+        if (idx !== "") item.index = idx;
+
+        await fetch(apiUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(item)
+        });
+
+        resetForm();
+        await load();
+      });
+
+      document.getElementById(prefix + "CancelEdit").addEventListener("click", resetForm);
+
+      initDropZone(prefix + "ImgDrop", "image/*", async file => {
+        if (!file) return;
+        document.getElementById(prefix + "ImgDrop").innerHTML = "⏳ Envoi...";
+        const path = await uploadFile(file, "image");
+        if (!path) {
+          document.getElementById(prefix + "ImgDrop").innerHTML = "Glisser-déposer une image, ou cliquer";
+          return;
+        }
+        currentImage = path;
+        document.getElementById(prefix + "Preview").innerHTML = `<img src="../${path}" class="w-full max-h-48 object-contain rounded">`;
+        document.getElementById(prefix + "ImgDrop").innerHTML = "✅ Image prête";
+      });
+
+      if (hasLink) {
+        initDropZone(prefix + "PdfDrop", ".pdf", async file => {
+          if (!file) return;
+          document.getElementById(prefix + "PdfDrop").innerHTML = "⏳ Envoi...";
+          const path = await uploadFile(file, "document");
+          if (!path) {
+            document.getElementById(prefix + "PdfDrop").innerHTML = "Glisser-déposer un PDF, ou cliquer";
+            return;
+          }
+          currentPdf = path;
+          document.getElementById(prefix + "PdfDrop").innerHTML = "📄 " + file.name + " (prêt)";
+        });
+        updateTypeVisibility();
+      }
+
+      load();
+    }
+
+    initGallerySection({ dropId: "galleryDrop", listId: "galleryList", apiUrl: "../api/evenements-precedents.php" });
+    initFicheSection({ prefix: "snack", apiUrl: "../api/carte-snacking.php", defaultBtnText: "Télécharger la carte", hasDate: true, hasTitle: false });
+    initFicheSection({ prefix: "futur", apiUrl: "../api/futurs-evenements.php", hasLink: false });
   </script>
 </body>
 </html>

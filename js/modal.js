@@ -68,7 +68,32 @@ document.addEventListener("DOMContentLoaded", () => {
     
     const modal = document.getElementById("welcomeModal");
     const closeBtn = document.getElementById("closeWelcomeModal");
-    
+    const modalImage = document.getElementById("welcomeModalImage");
+
+    // Affiche automatiquement l'image de la carte snacking dont la date
+    // est la plus proche sans dépasser aujourd'hui (celle de la semaine en cours).
+    fetch("carte-snacking.json")
+        .then((res) => res.json())
+        .then((items) => {
+            if (!items.length) return;
+            const todayStr = new Date().toISOString().slice(0, 10);
+            let current = items[0];
+            let bestDate = null;
+            let soonest = items[0];
+
+            items.forEach((it) => {
+                if (!it.date) return;
+                if (it.date <= todayStr && (bestDate === null || it.date > bestDate)) {
+                    bestDate = it.date;
+                    current = it;
+                }
+                if (it.date < soonest.date) soonest = it;
+            });
+
+            modalImage.src = (bestDate === null ? soonest : current).image;
+        })
+        .catch((error) => console.error("Erreur de chargement de la carte snacking :", error));
+
     const lastSeen = localStorage.getItem("welcomeModalSeenAt");
     const now = Date.now();
     const oneDay = 24 * 60 * 60 * 1000;

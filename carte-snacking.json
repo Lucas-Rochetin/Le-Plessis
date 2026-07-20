@@ -1,0 +1,10 @@
+[
+    {
+        "image": "images/carte_semaine.png",
+        "description": "Découvrez notre carte snacking disponible toute la semaine !",
+        "date": "2026-07-13",
+        "lien": "documents/carte_semaine.pdf",
+        "typeLien": "download",
+        "texteBouton": "Télécharger la carte"
+    }
+]
